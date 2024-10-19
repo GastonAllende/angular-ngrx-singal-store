@@ -1,0 +1,32 @@
+<div class="input-container">
+  <mat-form-field class="example-form-field">
+    <mat-label>Enter a TODO and press Enter</mat-label>
+    <input matInput type="text" [(ngModel)]="value" (keyup.enter)="addTodo()">
+    @if (value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+  <mat-button-toggle-group #filter (change)="onFilterTodo($event)">
+    <mat-button-toggle value="all">All</mat-button-toggle>
+    <mat-button-toggle value="pending">pending</mat-button-toggle>
+    <mat-button-toggle value="completed">complete</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+@if (!store.loading()) {
+  <mat-selection-list>
+    @for (todo of store.filterTodos(); track todo.id; let index = $index) {
+    <mat-list-option [selected]="todo.completed" (selectedChange)="updateCompleted(todo.id, $event)">
+      <mat-icon (click)="deleteTodo(todo.id, $event)">delete</mat-icon>
+      <span [ngStyle]="{'text-decoration' : todo.completed ? 'line-through' : 'none'}">
+        {{todo.title}}
+      </span>
+    </mat-list-option>
+    }
+  </mat-selection-list>
+} @else {
+  <mat-spinner></mat-spinner>
+}
+
