@@ -40,12 +40,13 @@ export class TodosListComponent {
     await this.store.deleteTodo(id);
   }
 
-  async updateCompleted(id: string, completed: boolean){
-    await this.store.updateTodo(id, completed);
+  async updateCompleted(id: string, completed: boolean) {
+    await this.store.updateTodo(id, !completed);
   }
 
   onFilterTodo(event : MatButtonToggleChange){
     const filter = event.value as TodosFilter;
+    
     this.store.updateFilter(filter); 
   }
 
